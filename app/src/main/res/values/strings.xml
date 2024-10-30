@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Waste Recognition App</string>
+
+    <string name="hello_message">Hello World!</string>
+    <string name="button_message">I\'m a button</string>
+    <string name="myfirstapplication">Log in or create a new account</string>
+
+    <string name="email_hint">Enter Your Email</string>
+
+    <string name="password_hint">Password</string>
+    <string name="loginbutton">Login</string>
+
+    <string name="waste_management_system">Waste Management System</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="app_logo">App Logo</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_results_title">This item should go in the…</string>
+    <string name="image_button_description">Take a picture</string>
+    <string name="sign_up_to_continue_msg">Please sign up to continue using the app.</string>
+    <string name="user_name_sign_up">Username</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="Different_Bins">Bins</string>
+    <string name="Bins_Msg">Find out different types of Bins</string>
+    <string name="app_appearance">Appearance</string>
+    <string name="theme_mode_app">Dark Theme</string>
+    <string name="settings_help">Help</string>
+    <string name="contributors_of_app">Find out more about the creators and contributors of this app</string>
+    <string name="app_contributors">Contributors</string>
+    <string name="write_google_review">Write a review for the app on the Google Play Store</string>
+    <string name="user_review">Write a review</string>
+    <string name="report_issue_by_serverside">Report technical issues or suggest new features</string>
+    <string name="feedback_msg">Send feedback</string>
+    <string name="app_privacy">Privacy Policy</string>
+    <string name="settings_index">Index</string>
+
+
+
+
+    <string name="account_settings">Account Settings</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_summary">Log out of your account</string>
+    <string name="profile_settings">Profile Settings</string>
+    <string name="manage_profile">Manage your profile information</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_password_summary">Securely change your password</string>
+
+
+
+</resources>
