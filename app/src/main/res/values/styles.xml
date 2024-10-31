@@ -1,12 +1,7 @@
 <resources>
-
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
-        <!-- Customize your theme here. -->
-<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
         <item name="colorPrimary">@color/slate_grey</item>
         <item name="colorPrimaryDark">@color/primary_dark_blue</item>
         <item name="colorAccent">@color/ui_primary_green</item>
     </style>
-
 </resources>

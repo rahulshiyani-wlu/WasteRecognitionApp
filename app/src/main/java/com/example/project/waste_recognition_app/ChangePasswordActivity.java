@@ -1,5 +1,6 @@
 package com.example.project.waste_recognition_app;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -11,19 +12,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-    private EditText etOldPassword, etNewPassword;
-    private Button btnChangePassword;
+    private EditText UserOldPassword, UserNewPassword;
+    private Button UserChangePasswordBtn;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
-        etOldPassword = findViewById(R.id.etOldPassword);
-        etNewPassword = findViewById(R.id.etNewPassword);
-        btnChangePassword = findViewById(R.id.btnChangePassword);
+        UserOldPassword = findViewById(R.id.user_old_password);
+        UserNewPassword = findViewById(R.id.user_new_password);
+        UserChangePasswordBtn = findViewById(R.id.user_change_password_btn);
 
-        btnChangePassword.setOnClickListener(new View.OnClickListener() {
+        UserChangePasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changePassword();
@@ -36,8 +38,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String savedPassword = prefs.getString("password", null); // Assume password is stored
 
-        String oldPassword = etOldPassword.getText().toString();
-        String newPassword = etNewPassword.getText().toString();
+        String oldPassword = UserOldPassword.getText().toString();
+        String newPassword = UserNewPassword.getText().toString();
 
         if (savedPassword != null && savedPassword.equals(oldPassword)) {
             // Change the password

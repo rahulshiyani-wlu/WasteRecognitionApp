@@ -41,8 +41,10 @@
     <string name="app_privacy">Privacy Policy</string>
     <string name="settings_index">Index</string>
 
-
-
+    <string name="recycling_bin_dialog">Recycling Bin</string>
+    <string name="compost_bin_dialog">Compost Bin</string>
+    <string name="garbage_bin_dialog">Compost Bin</string>
+    <string name="yard_waste_dialog">Yard Waste</string>
 
     <string name="account_settings">Account Settings</string>
     <string name="sign_out">Sign Out</string>
@@ -51,7 +53,7 @@
     <string name="manage_profile">Manage your profile information</string>
     <string name="change_password">Change Password</string>
     <string name="change_password_summary">Securely change your password</string>
-
+    <string name="profile_setting_heading">Profile Settings</string>
 
 
 </resources>

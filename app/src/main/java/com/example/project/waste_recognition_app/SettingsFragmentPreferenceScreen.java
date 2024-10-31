@@ -20,9 +20,8 @@ public class SettingsFragmentPreferenceScreen extends PreferenceFragmentCompat {
         // Load the preferences from an XML resource
         setPreferencesFromResource(R.xml.settings, rootKey);
 
-        // light/dark mode
+        // Dark Mode
         SwitchPreferenceCompat signaturePreference = findPreference("night_mode");
-
 
         if (signaturePreference != null){
             signaturePreference.setOnPreferenceClickListener(preference -> {
@@ -61,7 +60,6 @@ public class SettingsFragmentPreferenceScreen extends PreferenceFragmentCompat {
         }
 
         // legend
-        // TODO: Please change this, it looks ugly and doesn't help at all.
         Preference legendPreference = findPreference("index_legend");
         if (legendPreference != null) {
             legendPreference.setOnPreferenceClickListener(preference -> {
@@ -91,7 +89,7 @@ public class SettingsFragmentPreferenceScreen extends PreferenceFragmentCompat {
             feedbackPreference.setOnPreferenceClickListener(preference -> {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
 
-                String mailto = "mailto:rahulshiyani1@gmail.com" +
+                String mailto = "mailto:daarv@gmail.com" +
                         "?subject=" + Uri.encode("Feedback for the Waste Recognition App") +
                         "&body=" + Uri.encode("Hello!\n\nWhile using the Waste Recognition App, I found something / a few things that I would like to notify you of. [Please insert your feedback here]");
 

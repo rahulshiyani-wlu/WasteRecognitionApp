@@ -10,7 +10,6 @@
             app:key="index_legend"
             app:title="@string/Different_Bins"
             app:summary="@string/Bins_Msg"/>
-
     </PreferenceCategory>
 
 
@@ -23,7 +22,6 @@
             app:title="@string/theme_mode_app"/>
 
     </PreferenceCategory>
-
 
     <PreferenceCategory
         app:key="help_category"
@@ -50,34 +48,20 @@
             app:summary="@string/report_issue_by_serverside"
             app:title="@string/feedback_msg">
 
-            <!--
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="mailto:rahulshiyani1@gmail.com">
-                <extra
-                    android:name="android.intent.extra.SUBJECT"
-                    android:value="Feedback for the Waste Recognition App"/>
-                <extra
-                    android:name="android.intent.extra.TEXT"
-                    android:value="Hello!\n\nWhile using the Waste Recognition App, I found something / a few things that I would like to notify you of. [Please insert your feedback here]"/>
-            </intent>
-            -->
-
         </Preference>
 
         <Preference
             app:key="privacy_policy"
             app:title="@string/app_privacy">
-
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="https://sites.google.com/view/privacypolicyforwerecycle/home"/>
+<!--            <intent-->
+<!--                android:action="android.intent.action.VIEW"-->
+<!--                android:data="https://sites.google.com/view/Waste_Recognition_App"/>-->
         </Preference>
 
     </PreferenceCategory>
 
-
     <PreferenceCategory
+
         app:key="account_category"
         app:title="@string/account_settings">
 
@@ -96,7 +80,5 @@
             app:title="@string/sign_out"
             app:summary="@string/sign_out_summary" />
     </PreferenceCategory>
-
-
 
 </PreferenceScreen>

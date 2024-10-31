@@ -132,8 +132,8 @@ public class ResultsDisplayFragment extends Fragment {
             }
         }
 
-
         //endregion
+
         // retry button, if clicked then will redirect back to scanner
         Button retryButton = view.findViewById(R.id.scanAgainButton);
         retryButton.setOnClickListener(view1 -> {

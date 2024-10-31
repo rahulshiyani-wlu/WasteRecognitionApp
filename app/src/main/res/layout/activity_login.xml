@@ -48,7 +48,7 @@
 
             <!-- Title Section -->
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/user_app_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/waste_management_system"
@@ -63,7 +63,7 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
-                android:id="@+id/tvSubtitle"
+                android:id="@+id/user_login_sub_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/login_subtitle"
@@ -71,9 +71,9 @@
                 android:textSize="@dimen/text_size_subtitle"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/margin_small"
-                app:layout_constraintTop_toBottomOf="@id/tvTitle"
-                app:layout_constraintStart_toStartOf="@id/tvTitle"
-                app:layout_constraintEnd_toEndOf="@id/tvTitle"/>
+                app:layout_constraintTop_toBottomOf="@id/user_app_title"
+                app:layout_constraintStart_toStartOf="@id/user_app_title"
+                app:layout_constraintEnd_toEndOf="@id/user_app_title"/>
 
             <!-- Login Form Card -->
             <com.google.android.material.card.MaterialCardView
@@ -87,7 +87,7 @@
                 app:cardBackgroundColor="#F2FFFFFF"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/ui_primary_green"
-                app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
+                app:layout_constraintTop_toBottomOf="@id/user_login_sub_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintWidth_max="@dimen/max_content_width">
@@ -108,7 +108,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etEmail"
+                            android:id="@+id/email_login"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textEmailAddress"
@@ -128,7 +128,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etPassword"
+                            android:id="@+id/password_login"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPassword"
@@ -143,7 +143,7 @@
                         android:orientation="horizontal">
 
                         <CheckBox
-                            android:id="@+id/cbRememberMe"
+                            android:id="@+id/remember_me_login"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/remember_me"
@@ -151,19 +151,13 @@
                             android:textColor="@color/ui_secondary_text_gray"
                             android:buttonTint="@color/ui_primary_green"/>
 
-<!--                        <View-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1" />-->
-
-
                         <Space
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"/>
 
                         <TextView
-                            android:id="@+id/tvForgotPassword"
+                            android:id="@+id/forgot_password_login"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/forgot_password"
@@ -192,7 +186,7 @@
 
             <!-- Sign Up Section -->
             <TextView
-                android:id="@+id/tvNoAccount"
+                android:id="@+id/no_account_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dont_have_account"
@@ -204,7 +198,7 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
-                android:id="@+id/tvSignUp"
+                android:id="@+id/btnsignupredirect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_up"
@@ -212,7 +206,7 @@
                 android:textColor="@color/ui_primary_green"
                 android:textStyle="bold"
                 android:layout_marginTop="@dimen/margin_small"
-                app:layout_constraintTop_toBottomOf="@id/tvNoAccount"
+                app:layout_constraintTop_toBottomOf="@id/no_account_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
 

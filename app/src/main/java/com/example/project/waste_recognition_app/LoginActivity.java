@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         loadSavedEmail();
 
         // Set the OnClickListener for the Sign Up button
-        TextView user_sign_up_btn = findViewById(R.id.tvSignUp);
+        TextView user_sign_up_btn = findViewById(R.id.btnsignupredirect);
         user_sign_up_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,53 +65,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Log.i(LOGIN_INFO, "onCreate called");
-//        setContentView(R.layout.activity_login);
-//
-//        initializeViews();
-//        setupBackgroundImage();
-//        loadSavedEmail();
-//        setupLoginButton();
-//
-//
-//        TextView user_sign_up_btn = findViewById(R.id.tvSignUp);
-//        Button user_login_btn = findViewById(R.id.btnLogin);
-//
-//        // Set an OnClickListener to navigate to SignUpActivity
-//        user_sign_up_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Create an Intent to start SignUpActivity
-//                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        user_login_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//    }
-
     public void open_SignUp_Page(View view) {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
 
-
-
     @SuppressLint("WrongViewCast")
     private void initializeViews() {
-        userAuthLoginEmail = findViewById(R.id.etEmail);
-        userAuthLoginPassword = findViewById(R.id.etPassword);
+        userAuthLoginEmail = findViewById(R.id.email_login);
+        userAuthLoginPassword = findViewById(R.id.password_login);
         userLoginBtn = findViewById(R.id.btnLogin);
     }
 
@@ -164,23 +126,6 @@ public class LoginActivity extends AppCompatActivity {
 
         return true; // All validations passed
     }
-
-
-
-//    private boolean validateInput() {
-//        String email = userAuthLoginEmail.getText().toString().trim();
-//        String password = userAuthLoginPassword.getText().toString().trim();
-//
-//        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-//            userAuthLoginEmail.setError("Enter a Valid Email Address");
-//            return false;
-//        }
-//        if (password.isEmpty()) {
-//            userAuthLoginPassword.setError("Password Cannot Be Empty");
-//            return false;
-//        }
-//        return true;
-//    }
 
     private void saveEmail() {
         String email = userAuthLoginEmail.getText().toString().trim();
@@ -237,6 +182,5 @@ public class LoginActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         Log.i(LOGIN_INFO, "onRestoreInstanceState called");
     }
-
 
 }

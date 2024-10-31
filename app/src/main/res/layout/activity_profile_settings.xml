@@ -10,7 +10,7 @@
     android:id="@+id/profile_settings"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Profile Settings"
+    android:text="@string/profile_setting_heading"
     android:textSize="28sp"
     android:textStyle="bold"
     android:textColor="@color/ui_primary_green"
@@ -52,10 +52,10 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etUsername"
+                android:id="@+id/user_name_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"/>
+                android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -67,14 +67,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
+                android:id="@+id/user_email_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btnUpdate"
+            android:id="@+id/update_profile_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Update Profile"
