@@ -3,7 +3,7 @@ buildscript {
 
     repositories {
         google()
-        mavenCentral() // Replace jcenter() with mavenCentral()
+        mavenCentral()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:$agpVersion")

@@ -1,9 +1,8 @@
 package com.example.project.waste_recognition_app;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,42 +11,54 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-    private EditText UserOldPassword, UserNewPassword;
-    private Button UserChangePasswordBtn;
+    private EditText oldPasswordInput, newPasswordInput;
+    private Button changePasswordButton;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
-        UserOldPassword = findViewById(R.id.user_old_password);
-        UserNewPassword = findViewById(R.id.user_new_password);
-        UserChangePasswordBtn = findViewById(R.id.user_change_password_btn);
-
-        UserChangePasswordBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changePassword();
-            }
-        });
+        initializeUIComponents();
+        setupChangePasswordListener();
     }
 
-    private void changePassword() {
-        // Retrieve old password from SharedPreferences for verification
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        String savedPassword = prefs.getString("password", null); // Assume password is stored
+    private void initializeUIComponents() {
+        oldPasswordInput = findViewById(R.id.user_old_password);
+        newPasswordInput = findViewById(R.id.user_new_password);
+        changePasswordButton = findViewById(R.id.user_change_password_btn);
+    }
 
-        String oldPassword = UserOldPassword.getText().toString();
-        String newPassword = UserNewPassword.getText().toString();
+    private void setupChangePasswordListener() {
+        changePasswordButton.setOnClickListener(v -> handleChangePassword());
+    }
 
-        if (savedPassword != null && savedPassword.equals(oldPassword)) {
-            // Change the password
-            prefs.edit().putString("password", newPassword).apply();
-            Toast.makeText(this, "Password successfully changed", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity
+    private void handleChangePassword() {
+        SharedPreferences preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String storedPassword = preferences.getString("password", null);
+
+        String oldPassword = oldPasswordInput.getText().toString().trim();
+        String newPassword = newPasswordInput.getText().toString().trim();
+
+        if (storedPassword != null && storedPassword.equals(oldPassword)) {
+            updatePassword(preferences, newPassword);
+            showToast("Password successfully changed");
+
+            // Redirect to MainActivity Settings page
+            Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
+            intent.putExtra("navigate_to", "settings"); // Add a flag for navigation
+            startActivity(intent);
+            finish();
         } else {
-            Toast.makeText(this, "Old password is incorrect", Toast.LENGTH_SHORT).show();
+            showToast("Old password is incorrect");
         }
+    }
+
+    private void updatePassword(SharedPreferences preferences, String newPassword) {
+        preferences.edit().putString("password", newPassword).apply();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

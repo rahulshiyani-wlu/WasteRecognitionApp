@@ -20,13 +20,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:targetApi="tiramisu"
-        android:gravity="center"
-        >
-
-        <activity
-            android:name="com.example.project.waste_recognition_app.MoreInfoActivity"
-            android:exported="false">
-        </activity>
+        android:gravity="center">
 
         <activity
             android:name="com.example.project.waste_recognition_app.LoginActivity"
@@ -54,13 +48,6 @@
         </activity>
 
         <activity
-            android:name=".SettingsFragmentPreferenceScreen"
-            android:exported="false"
-            tools:ignore="Instantiatable">
-        </activity>
-
-
-        <activity
             android:name="com.example.project.waste_recognition_app.MainActivity"
             android:screenOrientation="sensorPortrait"
             android:exported="true">
@@ -69,6 +56,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ChangePasswordActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -27,8 +27,6 @@
     <string name="sign_up_to_continue_msg">Please sign up to continue using the app.</string>
     <string name="user_name_sign_up">Username</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="Different_Bins">Bins</string>
-    <string name="Bins_Msg">Find out different types of Bins</string>
     <string name="app_appearance">Appearance</string>
     <string name="theme_mode_app">Dark Theme</string>
     <string name="settings_help">Help</string>
@@ -40,11 +38,8 @@
     <string name="feedback_msg">Send feedback</string>
     <string name="app_privacy">Privacy Policy</string>
     <string name="settings_index">Index</string>
-
-    <string name="recycling_bin_dialog">Recycling Bin</string>
-    <string name="compost_bin_dialog">Compost Bin</string>
-    <string name="garbage_bin_dialog">Compost Bin</string>
-    <string name="yard_waste_dialog">Yard Waste</string>
+    <string name="item_name_list">Item Name</string>
+    <string name="item_info_list">Item Info</string>
 
     <string name="account_settings">Account Settings</string>
     <string name="sign_out">Sign Out</string>
@@ -55,5 +50,15 @@
     <string name="change_password_summary">Securely change your password</string>
     <string name="profile_setting_heading">Profile Settings</string>
 
+    <string name="Index_first">Index</string>
+    <string name="Scanner_second">Scanner</string>
+    <string name="Settings_third">Settings</string>
+
+    <string name="new_password_user">New Password</string>
+    <string name="old_password_user">Old Password</string>
+    <string name="update_profile_user">Update Profile</string>
+    <string name="profile_Username">Username</string>
+
+    <string name="group_version">Version 1.0</string>
 
 </resources>

@@ -47,7 +47,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
+            android:hint="@string/profile_Username"
             app:startIconTint="@color/ui_primary_green"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Email"
+            android:hint="@string/email"
             app:startIconTint="@color/ui_primary_green"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -77,7 +77,7 @@
             android:id="@+id/update_profile_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Update Profile"
+            android:text="@string/update_profile_user"
             android:backgroundTint="@color/ui_primary_green"
             android:textColor="@android:color/white"
             android:layout_marginTop="24dp"/>

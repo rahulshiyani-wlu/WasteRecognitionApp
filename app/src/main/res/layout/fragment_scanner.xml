@@ -15,7 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
     <ImageButton
         android:id="@+id/imgCapture"
         android:layout_width="72dp"

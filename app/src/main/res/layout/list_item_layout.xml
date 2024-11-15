@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="@color/surface_light_cyan"
+        app:cardBackgroundColor="#C0C0C0"
         app:cardCornerRadius="5dp"
         app:cardElevation="1dp">
 
@@ -33,7 +33,7 @@ android:orientation="vertical">
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/itemImage"
-                android:text="Item Name"
+                android:text="@string/item_name_list"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="?android:attr/textColorPrimary" />
 
@@ -47,7 +47,7 @@ android:orientation="vertical">
                 android:layout_toRightOf="@id/itemImage"
                 android:ellipsize="end"
                 android:maxLines="4"
-                android:text="Item Info\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sem diam, egestas vel lacinia vitae, consectetur vitae augue. Quisque congue bibendum condimentum. Nullam ullamcorper, erat in hendrerit malesuada, magna nisl commodo odio, ac porta dui quam a velit. Nulla lacus lorem, bibendum vel congue id, scelerisque vel eros. Aliquam euismod ex nec vulputate feugiat. Aliquam quis luctus augue. In venenatis, sem non viverra finibus, nisl turpis porta nisl, rhoncus pellentesque ante urna a quam."
+                android:text="@string/item_info_list"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="12sp" />

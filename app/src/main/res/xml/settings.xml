@@ -3,17 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        app:key="index_category"
-        app:title="@string/settings_index">
-
-        <Preference
-            app:key="index_legend"
-            app:title="@string/Different_Bins"
-            app:summary="@string/Bins_Msg"/>
-    </PreferenceCategory>
-
-
-    <PreferenceCategory
         app:key="appearance_category"
         app:title="@string/app_appearance">
 

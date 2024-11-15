@@ -211,7 +211,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
 
                 android:onClick="open_SignUp_Page"
-                />
+                tools:ignore="OnClick" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
