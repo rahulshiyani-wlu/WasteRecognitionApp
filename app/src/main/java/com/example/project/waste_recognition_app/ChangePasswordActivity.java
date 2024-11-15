@@ -44,7 +44,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             updatePassword(preferences, newPassword);
             showToast("Password successfully changed");
 
-            // Redirect to MainActivity Settings page
+//            Navigate to the Settings page in MainActivity
             Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
             intent.putExtra("navigate_to", "settings"); // Add a flag for navigation
             startActivity(intent);

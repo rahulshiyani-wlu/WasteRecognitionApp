@@ -14,20 +14,18 @@ import androidx.preference.SwitchPreferenceCompat;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
-    // Flag to notify MainActivity about settings changes
     public static boolean isSettingsChanged = false;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        // Load preferences from the XML resource
         setPreferencesFromResource(R.xml.settings, rootKey);
 
-        configureDarkModeToggle();       // Handle dark mode changes
-        configureSignOutPreference();   // Handle sign-out option
-        configureProfileSettingsOption(); // Navigate to Profile Settings
-        configureChangePasswordOption(); // Navigate to Change Password
-        configureContributorsDialog();  // Display contributors information
-        configureFeedbackOption();      // Handle feedback email option
+        configureDarkModeToggle();
+        configureSignOutPreference();
+        configureProfileSettingsOption();
+        configureChangePasswordOption();
+        configureContributorsDialog();
+        configureFeedbackOption();
     }
 
     private void configureDarkModeToggle() {

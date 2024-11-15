@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentType currentFragmentType;
     private BottomNavigationView bottomNavigation;
 
-    // Fragments
+    // Different Fragments
     private IndexFragment indexFragment;
     private ScannerFragment scannerFragment;
     private SettingsFragment settingsFragment;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        // Open settings if it was the previous screen, otherwise open index
+        // Navigate to the Settings screen if it was previously opened, otherwise go to the Index screen
         if (SettingsFragment.isSettingsChanged) {
             openSettings(true);
             SettingsFragment.isSettingsChanged = false;

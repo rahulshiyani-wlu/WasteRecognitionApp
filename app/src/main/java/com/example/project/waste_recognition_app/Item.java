@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,65 +17,53 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class Item {
-    private final String name;
-    private final String info;
-    private final String type;
-    private final String img;
+    private String name;
+    private String info;
+    private String type;
+    private String img;
 
-    // Constructor
     public Item(String img, String name, String type, String info) {
-        this.name = capitalizeWord(name);
+        this.name = capitailizeWord(name);
         this.info = info;
         this.img = img;
         this.type = type;
     }
 
-    // Getters for the Item properties
     public String getName() {
-        return capitalizeWord(name);
+        return capitailizeWord(name);
     }
 
     public String getInfo() {
         return info;
     }
 
-    public String getType() {
-        return type;
-    }
-
     public String getImg() {
         return img;
     }
 
-    // Utility method for capitalizing words
-    private static String capitalizeWord(String str) {
-        if (str == null || str.isEmpty()) {
+    private static String capitailizeWord(String str) {
+        if (str == null) {
             return str;
         }
-
-        StringBuilder capitalized = new StringBuilder();
-        char prevChar = ' ';
-
-        for (char currentChar : str.toCharArray()) {
-            if (prevChar == ' ' && currentChar != ' ') {
-                capitalized.append(Character.toUpperCase(currentChar));
+        StringBuilder s = new StringBuilder();
+        char ch = ' ';
+        for (int i = 0; i < str.length(); i++) {
+            if (ch == ' ' && str.charAt(i) != ' ') {
+                s.append(Character.toUpperCase(str.charAt(i)));
             } else {
-                capitalized.append(currentChar);
+                s.append(str.charAt(i));
             }
-            prevChar = currentChar;
+            ch = str.charAt(i);
         }
-
-        return capitalized.toString().trim();
+        return s.toString().trim();
     }
 
-    // Adapter Class for displaying Item objects in a ListView
-    public static class ItemListAdapter extends ArrayAdapter<Item> {
-
+    // Nested adapter class to manage list items
+    public static class Item_List_Adapter extends ArrayAdapter<Item> {
         private final Context context;
-        private final List<Item> items;
+        private List<Item> items;
 
-        // Constructor
-        public ItemListAdapter(@NonNull Context context, @NonNull List<Item> items) {
+        public Item_List_Adapter(@NonNull Context context, @NonNull List<Item> items) {
             super(context, R.layout.list_item_layout, items);
             this.context = context;
             this.items = items;
@@ -84,27 +74,32 @@ public class Item {
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             ViewHolder viewHolder;
 
-            // Inflate layout and set up ViewHolder if convertView is null
+            // Create a new view or reuse an existing one for better performance
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(context);
                 convertView = inflater.inflate(R.layout.list_item_layout, parent, false);
 
+                // Set up the ViewHolder to cache references to child views for efficient reuse
                 viewHolder = new ViewHolder();
                 viewHolder.itemImage = convertView.findViewById(R.id.itemImage);
                 viewHolder.itemName = convertView.findViewById(R.id.textView_itemName);
                 viewHolder.itemInfo = convertView.findViewById(R.id.textView_itemInfo);
 
+                // Link the ViewHolder to the view for future efficient reuse
                 convertView.setTag(viewHolder);
             } else {
+                // Reuse the existing ViewHolder to improve scrolling performance
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            // Bind data to the ViewHolder
+            // Retrieve the current item to populate the view
             Item currentItem = items.get(position);
+
+            // Populate the item's name and information into the corresponding views
             viewHolder.itemName.setText(currentItem.getName());
             viewHolder.itemInfo.setText(currentItem.getInfo());
 
-            // Load image with Glide or set default placeholder
+            // Use Glide to load the item's image with a placeholder and fallback for errors
             if (currentItem.getImg() != null && !currentItem.getImg().isEmpty()) {
                 Glide.with(context)
                         .load(currentItem.getImg())
@@ -112,20 +107,23 @@ public class Item {
                         .error(android.R.drawable.ic_menu_report_image)
                         .into(viewHolder.itemImage);
             } else {
+                // Display a default image when no image URL is available
                 viewHolder.itemImage.setImageResource(android.R.drawable.ic_menu_gallery);
             }
+
+            // Add a slide-in animation to each list item as it becomes visible
+            Animation slideInAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_in_right);
+            convertView.startAnimation(slideInAnimation);
 
             return convertView;
         }
 
-        // Update the adapter's dataset
         public void updateList(List<Item> newList) {
             items.clear();
             items.addAll(newList);
             notifyDataSetChanged();
         }
 
-        // ViewHolder class for performance optimization
         private static class ViewHolder {
             ImageView itemImage;
             TextView itemName;

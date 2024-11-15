@@ -48,7 +48,6 @@ public class ScannerFragment extends Fragment {
     private final Executor executor = Executors.newSingleThreadExecutor();
 
     public ScannerFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -85,7 +84,7 @@ public class ScannerFragment extends Fragment {
             tfliteInterpreter = new Interpreter(FileUtil.loadMappedFile(requireContext(), "your_model.tflite"));
             Log.d(TAG, "TFLite model loaded successfully");
 
-            // Initialize camera preview after model load
+            // Set up the camera preview once the model has been successfully loaded
             cameraProviderFuture.addListener(() -> {
                 try {
                     ProcessCameraProvider cameraProvider = cameraProviderFuture.get();

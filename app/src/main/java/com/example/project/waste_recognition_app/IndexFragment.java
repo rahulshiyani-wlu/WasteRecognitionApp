@@ -1,11 +1,15 @@
 package com.example.project.waste_recognition_app;
 
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import androidx.annotation.Keep;
@@ -27,16 +31,15 @@ public class IndexFragment extends Fragment {
 
     private static final String TAG = "IndexFragment";
 
-    // Variables for item list, adapter, and UI elements
-    private List<Item> itemList;
-    private Item.ItemListAdapter itemAdapter;
+    private List<Item> originalItemList = new ArrayList<>();
+    private Item.Item_List_Adapter itemListAdapter;
     private ListView listView;
     private ProgressDialog progressDialog;
-    private TextInputEditText searchField;
+    private TextInputEditText searchInputField;
 
     @Keep
     public IndexFragment() {
-        // Required empty public constructor
+//        Default empty constructor required for fragment initialization
     }
 
     @Override
@@ -48,7 +51,7 @@ public class IndexFragment extends Fragment {
     @Override
     @Keep
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for the fragment
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_index, container, false);
     }
 
@@ -57,96 +60,108 @@ public class IndexFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize Firestore instance and UI elements
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
         listView = view.findViewById(R.id.listView);
-        searchField = view.findViewById(R.id.searchInputEditText);
+        searchInputField = view.findViewById(R.id.searchInputEditText);
 
-        // Initialize item list and adapter
-        itemList = new ArrayList<>();
-        itemAdapter = new Item.ItemListAdapter(requireContext(), new ArrayList<>(itemList));
-        listView.setAdapter(itemAdapter);
+        itemListAdapter = new Item.Item_List_Adapter(getContext(), new ArrayList<>());
+        listView.setAdapter(itemListAdapter);
 
-        // Show loading dialog
         setupProgressDialog();
 
-        // Fetch data from Firestore
-        fetchDataFromFirestore(db);
+        fetchDataFromFirestore();
 
-        // Setup search functionality (only triggers when user interacts with the search field)
         setupSearchFunctionality();
+
+        setupScrollListener();
     }
 
-    // Show and configure the progress dialog
     private void setupProgressDialog() {
-        progressDialog = new ProgressDialog(requireContext());
+        progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle("Loading...");
-        progressDialog.setMessage("Fetching items...");
+        progressDialog.setMessage("Loading Items...");
         progressDialog.setIndeterminate(true);
         progressDialog.show();
     }
 
-    // Fetch data from Firestore and Update the List
-    private void fetchDataFromFirestore(FirebaseFirestore db) {
-        db.collection("more_info").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                itemList.clear();
-                for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    Item item = new Item(
-                            (String) document.get("img"),
-                            (String) document.get("name"),
-                            (String) document.get("type"),
-                            (String) document.get("info")
-                    );
-                    if (item.getName() != null) {
-                        itemList.add(item);
-                    }
-                }
-                // Sort items alphabetically
-                Collections.sort(itemList, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+    private void fetchDataFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                // Update adapter with new data
-                itemAdapter.updateList(new ArrayList<>(itemList));
-            } else {
-                Log.w(TAG, "Error fetching documents", task.getException());
-            }
-            dismissProgressDialog();
-        });
-    }
+        db.collection("more_info")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        originalItemList.clear();
+                        for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            Item item = new Item(
+                                    (String) document.get("img"),
+                                    (String) document.get("name"),
+                                    (String) document.get("type"),
+                                    (String) document.get("info")
+                            );
 
-    // Setup search functionality for filtering the list (only triggered on user interaction)
-    private void setupSearchFunctionality() {
-        searchField.setOnClickListener(v -> {
-            searchField.addTextChangedListener(new android.text.TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    // No action required here
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    // No action required here
-                }
-
-                @Override
-                public void afterTextChanged(android.text.Editable s) {
-                    List<Item> filteredList = new ArrayList<>();
-                    if (!s.toString().isEmpty()) {
-                        for (Item item : itemList) {
-                            if (item.getName().toLowerCase().contains(s.toString().toLowerCase())) {
-                                filteredList.add(item);
+                            if (item.getName() != null) {
+                                originalItemList.add(item);
                             }
                         }
+
+//                        Sort the list of items in alphabetical order based on their names
+                        Collections.sort(originalItemList, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+
+                        itemListAdapter.updateList(new ArrayList<>(originalItemList));
                     } else {
-                        filteredList.addAll(itemList);
+                        Log.w(TAG, "Error getting documents.", task.getException());
                     }
-                    itemAdapter.updateList(filteredList);
-                }
-            });
+                    dismissProgressDialog();
+                });
+    }
+
+    private void setupSearchFunctionality() {
+        searchInputField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No action required for this method
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No action required for this method
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filterList(s.toString());
+            }
         });
     }
 
-    // Dismiss progress dialog
+    private void filterList(String query) {
+        List<Item> filteredList = new ArrayList<>();
+        if (!query.isEmpty()) {
+            for (Item item : originalItemList) {
+                if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredList.add(item);
+                }
+            }
+        } else {
+            filteredList.addAll(originalItemList);
+        }
+        itemListAdapter.updateList(filteredList);
+    }
+
+    private void setupScrollListener() {
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                // Placeholder for future implementation if possible
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                // Placeholder for future implementation if possible
+            }
+        });
+    }
+
     @Keep
     public void dismissProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
@@ -165,7 +180,11 @@ public class IndexFragment extends Fragment {
     @Keep
     public void onDestroy() {
         super.onDestroy();
+        dismissProgressDialog();
         progressDialog = null;
     }
 
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
+    }
 }
