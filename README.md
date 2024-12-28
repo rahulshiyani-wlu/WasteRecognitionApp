@@ -1,3 +1,7 @@
+Contributed by 
+
+Vandan Patel, Rahulkumar Shiyani, Ayush Patel
+
 Activity lifecycle, Navigation using intents, Input validation
 Handling UI elements like Button, EditText, and TextView
 https://developer.android.com/guide/components/activities
@@ -7,7 +11,7 @@ https://developer.android.com/guide/fragments
 
 Setting up Firestore, Fetching and querying data from Firestore,
 Handling Firestore asynchronous tasks
-https://firebase.google.com/docs/firestore 
+https://firebase.google.com/docs/firestore
 
 For Dataset
 https://www.kaggle.com/ 
