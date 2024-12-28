@@ -30,6 +30,7 @@ Features
    Kaggle Datasets
 
 How to Use
+
 Install the App: Download the APK file and install it on your Android device.
 Navigate Through the App: Explore waste recognition features using the simple and intuitive UI.
 Data Queries: The app is integrated with Firestore for real-time waste categorization data.
