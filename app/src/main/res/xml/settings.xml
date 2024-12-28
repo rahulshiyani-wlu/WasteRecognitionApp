@@ -8,8 +8,8 @@
 
         <SwitchPreferenceCompat
             app:key="night_mode"
-            app:title="@string/theme_mode_app"/>
-
+            app:title="@string/theme_mode_app"
+            android:icon="@drawable/setting_dark_mode" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -19,55 +19,137 @@
         <Preference
             app:key="contributors"
             app:summary="@string/contributors_of_app"
-            app:title="@string/app_contributors"/>
+            app:title="@string/app_contributors"
+            android:icon="@drawable/setting_contributor" />
 
         <Preference
             app:key="play_store_review"
             app:summary="@string/write_google_review"
-            app:title="@string/user_review">
+            app:title="@string/user_review"
+            android:icon="@drawable/setting_review">
 
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="market://details?id=com.example.project.waste_recognition_app"
-                />
+                android:data="market://details?id=com.example.project.waste_recognition_app" />
         </Preference>
 
         <Preference
             app:key="feedback"
             app:summary="@string/report_issue_by_serverside"
-            app:title="@string/feedback_msg">
-
-        </Preference>
+            app:title="@string/feedback_msg"
+            android:icon="@drawable/setting_feedback" />
 
         <Preference
             app:key="privacy_policy"
-            app:title="@string/app_privacy">
-<!--            <intent-->
-<!--                android:action="android.intent.action.VIEW"-->
-<!--                android:data="https://sites.google.com/view/Waste_Recognition_App"/>-->
+            app:title="@string/app_privacy"
+            android:icon="@drawable/setting_privacy">
         </Preference>
 
     </PreferenceCategory>
 
     <PreferenceCategory
-
         app:key="account_category"
         app:title="@string/account_settings">
 
         <Preference
             app:key="profile_settings"
             app:title="@string/profile_settings"
-            app:summary="@string/manage_profile" />
+            app:summary="@string/manage_profile"
+            android:icon="@drawable/setting_profile" />
 
         <Preference
             app:key="change_password"
             app:title="@string/change_password"
-            app:summary="@string/change_password_summary" />
+            app:summary="@string/change_password_summary"
+            android:icon="@drawable/setting_pasword" />
 
         <Preference
             app:key="sign_out"
             app:title="@string/sign_out"
-            app:summary="@string/sign_out_summary" />
+            app:summary="@string/sign_out_summary"
+            android:icon="@drawable/setting_log_out" />
     </PreferenceCategory>
 
 </PreferenceScreen>
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android">-->
+
+<!--    <PreferenceCategory-->
+<!--        app:key="appearance_category"-->
+<!--        app:title="@string/app_appearance">-->
+
+<!--        <SwitchPreferenceCompat-->
+<!--            app:key="night_mode"-->
+<!--            app:title="@string/theme_mode_app"-->
+<!--            android:icon="@drawable/setting_dark_mode" />-->
+<!--    </PreferenceCategory>-->
+
+<!--    <PreferenceCategory-->
+<!--        app:key="help_category"-->
+<!--        app:title="@string/settings_help">-->
+
+<!--        <Preference-->
+<!--            app:key="contributors"-->
+<!--            app:summary="@string/contributors_of_app"-->
+<!--            app:title="@string/app_contributors"-->
+<!--            android:icon="@drawable/setting_contributor" />-->
+
+<!--        <Preference-->
+<!--            app:key="play_store_review"-->
+<!--            app:summary="@string/write_google_review"-->
+<!--            app:title="@string/user_review"-->
+<!--            android:icon="@drawable/setting_review">-->
+
+<!--            <intent-->
+<!--                android:action="android.intent.action.VIEW"-->
+<!--                android:data="market://details?id=com.example.project.waste_recognition_app" />-->
+<!--        </Preference>-->
+
+<!--        <Preference-->
+<!--            app:key="feedback"-->
+<!--            app:summary="@string/report_issue_by_serverside"-->
+<!--            app:title="@string/feedback_msg"-->
+<!--            android:icon="@drawable/setting_feedback" />-->
+
+<!--        <Preference-->
+<!--            app:key="privacy_policy"-->
+<!--            app:title="@string/app_privacy"-->
+<!--            android:icon="@drawable/setting_privacy">-->
+<!--            &lt;!&ndash; Uncomment the intent if needed &ndash;&gt;-->
+<!--            &lt;!&ndash;-->
+<!--            <intent-->
+<!--                android:action="android.intent.action.VIEW"-->
+<!--                android:data="https://sites.google.com/view/Waste_Recognition_App"/>-->
+<!--            &ndash;&gt;-->
+<!--        </Preference>-->
+
+<!--    </PreferenceCategory>-->
+
+<!--    <PreferenceCategory-->
+<!--        app:key="account_category"-->
+<!--        app:title="@string/account_settings">-->
+
+<!--        <Preference-->
+<!--            app:key="profile_settings"-->
+<!--            app:title="@string/profile_settings"-->
+<!--            app:summary="@string/manage_profile"-->
+<!--            android:icon="@drawable/setting_profile" />-->
+
+<!--        <Preference-->
+<!--            app:key="change_password"-->
+<!--            app:title="@string/change_password"-->
+<!--            app:summary="@string/change_password_summary"-->
+<!--            android:icon="@drawable/setting_pasword" />-->
+
+<!--        <Preference-->
+<!--            app:key="sign_out"-->
+<!--            app:title="@string/sign_out"-->
+<!--            app:summary="@string/sign_out_summary"-->
+<!--            android:icon="@drawable/setting_log_out" />-->
+<!--    </PreferenceCategory>-->
+
+<!--</PreferenceScreen>-->

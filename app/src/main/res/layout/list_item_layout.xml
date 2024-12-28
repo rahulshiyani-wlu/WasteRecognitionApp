@@ -3,55 +3,69 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        app:cardBackgroundColor="#C0C0C0"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="1dp">
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="#F5F5F5"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp">
 
+            <!-- Image of the item -->
             <ImageView
                 android:id="@+id/itemImage"
-                android:layout_width="120dp"
-                android:layout_height="90dp"
-                android:padding="4dp"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/item_image"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/ic_launcher_background" />
 
+            <!-- Waste type text -->
             <TextView
-                android:id="@+id/textView_itemName"
-                android:layout_width="match_parent"
+                android:id="@+id/textView_itemType"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/itemImage"
-                android:text="@string/item_name_list"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text=""
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="#000000"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView_itemInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="64dp"
-                android:layout_below="@id/textView_itemName"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_toRightOf="@id/itemImage"
-                android:ellipsize="end"
-                android:maxLines="4"
-                android:text="@string/item_info_list"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="12sp" />
+            <!-- Delete Icon as a GIF -->
+            <ImageView
+                android:id="@+id/deleteIcon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/delete_icon"
+                android:layout_gravity="center"
+                android:scaleType="centerInside" />
 
-        </RelativeLayout>
+            <!-- Info Animation Icon as a GIF -->
+            <ImageView
+                android:id="@+id/infoIcon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/info_icon"
+                android:layout_gravity="center"
+                android:scaleType="centerInside" />
+        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

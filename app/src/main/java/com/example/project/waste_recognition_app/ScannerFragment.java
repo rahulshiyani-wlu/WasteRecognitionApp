@@ -1,63 +1,58 @@
 package com.example.project.waste_recognition_app;
 
+import static android.content.ContentValues.TAG;
+import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureException;
-import androidx.camera.core.ImageProxy;
-import androidx.camera.core.Preview;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-
-import com.google.common.util.concurrent.ListenableFuture;
-
+import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
-import org.tensorflow.lite.support.common.FileUtil;
-
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class ScannerFragment extends Fragment {
+    private LottieAnimationView camera;
+    private ScrollView scrollView;
+    private ImageView imageView, grey_bin, blue_bin, green_bin, backgroundAnimation;
+    private TextView greyBinResult, blueBinResult, greenBinResult;
+    private int imageSize = 300;
 
-    private static final String TAG = "ScannerFragment";
-    private static final int REQUEST_CODE_PERMISSIONS = 101;
-    private static final String[] REQUIRED_PERMISSIONS = {"android.permission.CAMERA", "android.permission.INTERNET"};
-
-    private PreviewView previewView;
-    private ImageButton captureButton;
-    private Interpreter tfliteInterpreter;
-    private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    private final Executor executor = Executors.newSingleThreadExecutor();
-
-    public ScannerFragment() {
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_scanner, container, false);
     }
 
@@ -65,105 +60,235 @@ public class ScannerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        previewView = view.findViewById(R.id.view_finder);
-        captureButton = view.findViewById(R.id.imgCapture);
+        // Initialize views so that we can use them later
+        camera = view.findViewById(R.id.button);
+        imageView = view.findViewById(R.id.imageView);
+        grey_bin = view.findViewById(R.id.grey_bin);
+        blue_bin = view.findViewById(R.id.blue_bin);
+        green_bin = view.findViewById(R.id.green_bin);
+        greyBinResult = view.findViewById(R.id.grey_bin_result);
+        blueBinResult = view.findViewById(R.id.blue_bin_result);
+        greenBinResult = view.findViewById(R.id.green_bin_result);
+        scrollView = view.findViewById(R.id.scrollView);
 
-        captureButton.setAlpha(0.5f);
-        captureButton.setClickable(false);
+        // Initialize the background animation
+        backgroundAnimation = view.findViewById(R.id.scanner_background_animation);
 
-        if (allPermissionsGranted()) {
-            initializeModel();
-        } else {
-            requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
+        // Load the GIF into the ImageView using Glide
+        Glide.with(requireContext())
+                .asGif()
+                .load(R.raw.scanner_background_animation)
+                .into(backgroundAnimation);
+
+        // Set up Lottie animation (start rotating when visible)
+        camera.setAnimation(R.raw.scanner_icon);
+        camera.playAnimation();
+        camera.loop(true);
+
+        // Set up Lottie button click listener
+        camera.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                // Hide background animation when camera button is clicked
+                backgroundAnimation.setVisibility(View.GONE);
+
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 3);
+                scrollView.scrollTo(0, 0);
+                resetViewState();
+            } else {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == requireActivity().RESULT_OK && data != null) {
+            if (requestCode == 3) {
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                int dimension = Math.min(image.getWidth(), image.getHeight());
+                image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
+                imageView.setImageBitmap(image);
+
+                image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+
+                // Classify the image immediately and update the UI
+                String binType = classifyImage(image);
+                showBinResult(binType);
+
+                // Get current date and time
+                String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                // Upload image to Firebase and save details including date and time
+                uploadImageToFirebase(image, binType, currentDate, currentTime);
+            }
         }
     }
 
-    private void initializeModel() {
+    private void resetViewState() {
+        // Hide GIF views and result TextViews
+        grey_bin.setVisibility(View.GONE);
+        blue_bin.setVisibility(View.GONE);
+        green_bin.setVisibility(View.GONE);
+        greyBinResult.setVisibility(View.GONE);
+        blueBinResult.setVisibility(View.GONE);
+        greenBinResult.setVisibility(View.GONE);
+    }
+
+    private void showBinResult(String binType) {
+        // Show the correct bin text and GIF animation based on classification
+        switch (binType) {
+            case "Recyclable":
+                greyBinResult.setText("This item should be placed in the Recyclable bin.");
+                greyBinResult.setVisibility(View.VISIBLE);
+                loadGifIntoImageView(grey_bin, R.raw.grey_dustbin_animation);
+                break;
+
+            case "Non-Recyclable":
+                blueBinResult.setText("This item should be placed in the Non-Recyclable bin.");
+                blueBinResult.setVisibility(View.VISIBLE);
+                loadGifIntoImageView(blue_bin, R.raw.blue_dustbin_animation);
+                break;
+
+            case "Organic":
+                greenBinResult.setText("This item should be placed in the Organic bin.");
+                greenBinResult.setVisibility(View.VISIBLE);
+                loadGifIntoImageView(green_bin, R.raw.green_dustbin_animation);
+                break;
+
+            default:
+                Log.e(TAG, "Unknown bin type: " + binType);
+                break;
+        }
+    }
+
+    private void loadGifIntoImageView(ImageView imageView, int gifResource) {
+        // Load the appropriate GIF and show the ImageView
+        Glide.with(requireContext())
+                .asGif()
+                .load(gifResource)
+                .into(imageView);
+        imageView.setVisibility(View.VISIBLE);
+    }
+
+    private String classifyImage(Bitmap image) {
         try {
-            // Load the TFLite model
-            tfliteInterpreter = new Interpreter(FileUtil.loadMappedFile(requireContext(), "your_model.tflite"));
-            Log.d(TAG, "TFLite model loaded successfully");
+            Interpreter tfliteInterpreter = new Interpreter(loadModelFile());
 
-            // Set up the camera preview once the model has been successfully loaded
-            cameraProviderFuture.addListener(() -> {
-                try {
-                    ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                    bindCamera(cameraProvider);
-                } catch (Exception e) {
-                    Log.e(TAG, "Error initializing camera preview: ", e);
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 300, 300, 3}, DataType.FLOAT32);
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3);
+            byteBuffer.order(ByteOrder.nativeOrder());
+
+            int[] intValues = new int[imageSize * imageSize];
+            image.getPixels(intValues, 0, image.getWidth(), 0, 0, image.getWidth(), image.getHeight());
+            int pixel = 0;
+            for (int i = 0; i < imageSize; i++) {
+                for (int j = 0; j < imageSize; j++) {
+                    int val = intValues[pixel++];
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f));
                 }
-            }, ContextCompat.getMainExecutor(requireContext()));
+            }
 
+            inputFeature0.loadBuffer(byteBuffer);
+
+            TensorBuffer outputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 8}, DataType.FLOAT32);
+            tfliteInterpreter.run(inputFeature0.getBuffer(), outputFeature0.getBuffer());
+
+            float[] confidences = outputFeature0.getFloatArray();
+
+            int maxPos = 0;
+            float maxConfidence = 0;
+            for (int i = 0; i < confidences.length; i++) {
+                if (confidences[i] > maxConfidence) {
+                    maxConfidence = confidences[i];
+                    maxPos = i;
+                }
+            }
+
+            String[] classes = {"Battery", "Cardboard", "Food Waste", "Glass", "Metal", "Paper", "Plastic", "Trash"};
+            tfliteInterpreter.close();
+
+            return displayGarbageDisposalBin(classes[maxPos]);
         } catch (IOException e) {
-            Log.e(TAG, "Error loading TFLite model: ", e);
+            Log.e(TAG, "Error during model inference", e);
+            return "Unknown";
         }
     }
 
-    private void bindCamera(@NonNull ProcessCameraProvider cameraProvider) {
-        Preview preview = new Preview.Builder().build();
-        CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
-        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+    private String displayGarbageDisposalBin(String item) {
+        String bin = "";
+        switch (item) {
+            case "Cardboard":
+            case "Plastic":
+            case "Paper":
+            case "Metal":
+                bin = "Recyclable";
+                break;
 
-        ImageCapture imageCapture = new ImageCapture.Builder().setTargetRotation(requireView().getDisplay().getRotation()).build();
+            case "Glass":
+            case "Trash":
+            case "Battery":
+                bin = "Non-Recyclable";
+                break;
 
-        captureButton.setOnClickListener(view -> imageCapture.takePicture(executor, new ImageCapture.OnImageCapturedCallback() {
-            @Override
-            public void onCaptureSuccess(@NonNull ImageProxy image) {
-                Bitmap bitmap = convertImageProxyToBitmap(image);
-                if (bitmap != null) {
-                    float[] results = runModel(bitmap);
-                    Log.d(TAG, "Inference results: " + java.util.Arrays.toString(results));
-                }
-                image.close();
-            }
-
-            @Override
-            public void onError(@NonNull ImageCaptureException exception) {
-                Log.e(TAG, "Error capturing image: " + exception.getMessage());
-            }
-        }));
-
-        cameraProvider.unbindAll();
-        cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, imageCapture, preview);
-
-        captureButton.setAlpha(1f);
-        captureButton.setClickable(true);
-    }
-
-    private float[] runModel(Bitmap bitmap) {
-        bitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, true);
-        ByteBuffer inputBuffer = ByteBuffer.allocateDirect(224 * 224 * 3 * 4).order(ByteOrder.nativeOrder());
-
-        for (int y = 0; y < 224; y++) {
-            for (int x = 0; x < 224; x++) {
-                int pixel = bitmap.getPixel(x, y);
-                inputBuffer.putFloat((Color.red(pixel) - 127) / 255.0f);
-                inputBuffer.putFloat((Color.green(pixel) - 127) / 255.0f);
-                inputBuffer.putFloat((Color.blue(pixel) - 127) / 255.0f);
-            }
+            case "Food Waste":
+                bin = "Organic";
+                break;
         }
 
-        ByteBuffer outputBuffer = ByteBuffer.allocateDirect(3 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder());
-        tfliteInterpreter.run(inputBuffer, outputBuffer);
-
-        float[] probabilities = new float[outputBuffer.asFloatBuffer().limit()];
-        outputBuffer.asFloatBuffer().get(probabilities);
-        return probabilities;
+        return bin;
     }
 
-    private Bitmap convertImageProxyToBitmap(ImageProxy image) {
-        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-        byte[] bytes = new byte[buffer.capacity()];
-        buffer.get(bytes);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
+    private MappedByteBuffer loadModelFile() throws IOException {
+        AssetFileDescriptor fileDescriptor = requireContext().getAssets().openFd("model.tflite");
+        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
+        FileChannel fileChannel = inputStream.getChannel();
+        long startOffset = fileDescriptor.getStartOffset();
+        long declaredLength = fileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
-    private boolean allPermissionsGranted() {
-        for (String permission : REQUIRED_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
+    private void uploadImageToFirebase(Bitmap image, String binType, String date, String time) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        String uniqueId = String.valueOf(System.currentTimeMillis());
+        StorageReference storageRef = storage.getReference().child("images/" + uniqueId + ".jpg");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = storageRef.putBytes(data);
+        uploadTask.addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            String imageUrl = uri.toString();
+            saveToFirestore(uniqueId, binType, imageUrl, date, time);
+        })).addOnFailureListener(e -> Log.e(TAG, "Failed to upload image", e));
+    }
+
+    private void saveToFirestore(String uniqueId, String binType, String imageUrl, String date, String time) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if (userId == null) {
+            Log.e(TAG, "User not logged in. Cannot save item.");
+            return;
         }
-        return true;
+
+        Map<String, Object> scannedItem = new HashMap<>();
+        scannedItem.put("binType", binType);
+        scannedItem.put("img", imageUrl);
+        scannedItem.put("date", date);
+        scannedItem.put("time", time);
+        scannedItem.put("timestamp", uniqueId);  // Add timestamp for sorting
+
+        db.collection("users").document(userId).collection("scanned_items")
+                .document(uniqueId)
+                .set(scannedItem)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Item added to Firestore with ID: " + uniqueId))
+                .addOnFailureListener(e -> Log.e(TAG, "Error adding item to Firestore", e));
     }
 }

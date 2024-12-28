@@ -8,22 +8,22 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.textfield.TextInputEditText;
-import java.util.regex.Pattern;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String LOGIN_ACTIVITY = "LoginActivity";
-    private static final String PREFS_FILE = "UserPreferences";
-    private static final String PREF_KEY_EMAIL = "SavedEmail";
 
-    private TextInputEditText inputEmail, inputPassword;
+    private TextInputEditText inputEmailOrUsername, inputPassword;
     private Button loginButton;
-    private SharedPreferences sharedPreferences;
+    private TextView forgotPasswordTextView;
+
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,37 +31,81 @@ public class LoginActivity extends AppCompatActivity {
         Log.i(LOGIN_ACTIVITY, "onCreate called");
         setContentView(R.layout.activity_login);
 
+        // Initialize Firebase Auth and Firestore
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        // Initialize UI components
         initializeUIComponents();
         setBackgroundImage();
-        restoreSavedEmail();
         setupSignUpButton();
+        setupForgotPasswordButton();
         setupLoginButton();
-
     }
 
+    // Method to log in the user
+    private void loginUser() {
+        String input = inputEmailOrUsername.getText().toString().trim();
+        String password = inputPassword.getText().toString().trim();
+
+        if (input.isEmpty() || password.isEmpty()) {
+            showToast("Username/Email and password must not be empty");
+            return;
+        }
+
+        // Check if input is an email or username
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(input).matches()) {
+            // Input is an email
+            auth.signInWithEmailAndPassword(input, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            fetchUserDataAndProceed();
+                        } else {
+                            showToast("Login failed: " + task.getException().getMessage());
+                        }
+                    });
+        } else {
+            // Input is a username
+            db.collection("users")
+                    .whereEqualTo("username", input)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            String email = queryDocumentSnapshots.getDocuments().get(0).getString("email");
+                            if (email != null) {
+                                auth.signInWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()) {
+                                                fetchUserDataAndProceed();
+                                            } else {
+                                                showToast("Login failed: " + task.getException().getMessage());
+                                            }
+                                        });
+                            }
+                        } else {
+                            showToast("No user found with the given username");
+                        }
+                    })
+                    .addOnFailureListener(e -> showToast("Failed to fetch user: " + e.getMessage()));
+        }
+    }
+
+    // Method to initialize UI components
     @SuppressLint("WrongViewCast")
     private void initializeUIComponents() {
-        inputEmail = findViewById(R.id.email_login);
+        inputEmailOrUsername = findViewById(R.id.email_login);
         inputPassword = findViewById(R.id.password_login);
         loginButton = findViewById(R.id.btnLogin);
+        forgotPasswordTextView = findViewById(R.id.forgot_password);
     }
 
-    // Assign a fixed background image to the activity
+    // Method to set the background image for the activity
     private void setBackgroundImage() {
         ImageView backgroundImage = findViewById(R.id.backgroundImage);
         backgroundImage.setImageResource(R.drawable.garbage);
     }
 
-    // Fetch the stored email from SharedPreferences
-    private void restoreSavedEmail() {
-        sharedPreferences = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
-        String savedEmail = sharedPreferences.getString(PREF_KEY_EMAIL, "");
-        if (!savedEmail.isEmpty()) {
-            inputEmail.setText(savedEmail);
-        }
-    }
-
-    // Configure the Sign-Up button to navigate SignUpActivity
+    // Method to set up the sign-up button
     private void setupSignUpButton() {
         TextView signUpButton = findViewById(R.id.btnsignupredirect);
         signUpButton.setOnClickListener(v -> {
@@ -70,102 +114,53 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // Configure the Login button to validate inputs and navigate to MainActivity
-    private void setupLoginButton() {
-        loginButton.setOnClickListener(v -> {
-            // Verify the correctness of user-provided inputs
-            if (isInputValid()) {
-                // Store the email in SharedPreferences for future use
-                saveEmailToPreferences();
-                // Redirect the user to MainActivity
-                navigateToMainActivity();
-            }
+    // Method to set up the forgot password button
+    private void setupForgotPasswordButton() {
+        forgotPasswordTextView.setOnClickListener(v -> {
+            showToast("Password Recovery Page");
+            Intent intent = new Intent(LoginActivity.this, PasswordRecovery.class);
+            startActivity(intent);
         });
     }
 
-    private boolean isInputValid() {
-        String email = inputEmail.getText().toString().trim();
-        String password = inputPassword.getText().toString().trim();
-
-        // Check if the email is in a valid format
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            inputEmail.setError("Enter a valid email address");
-            return false;
-        }
-
-        // Check if the password fulfills the specified criteria
-        if (password.isEmpty()) {
-            inputPassword.setError("Password cannot be empty");
-            return false;
-        }
-
-        // Confirm the password adheres to security requirements
-        if (!Pattern.matches("^(?=.*[0-9])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", password)) {
-            inputPassword.setError("Password must be at least 8 characters, include a digit and a special character");
-            return false;
-        }
-
-        return true;
-        // Indicate success if all validation checks are passed
+    // Method to show a toast message
+    void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    // Save the entered email to SharedPreferences
-    private void saveEmailToPreferences() {
-        String email = inputEmail.getText().toString().trim();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(PREF_KEY_EMAIL, email);
-        editor.apply(); // Apply changes to SharedPreferences
+    // Method to set up the login button
+    private void setupLoginButton() {
+        loginButton.setOnClickListener(v -> loginUser());
     }
 
-    // Redirect to MainActivity upon successful login
+    // Method to navigate to the main activity
     private void navigateToMainActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
-        // Terminate LoginActivity
     }
 
-    // Lifecycle Activities
+    // Fetch user data from Firestore and proceed to main activity
+    private void fetchUserDataAndProceed() {
+        db.collection("users")
+                .document(auth.getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String username = documentSnapshot.getString("username");
+                        String email = documentSnapshot.getString("email");
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i(LOGIN_ACTIVITY, "onResume called");
-    }
+                        // Save user data to SharedPreferences
+                        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                        prefs.edit()
+                                .putString("username", username)
+                                .putString("email", email)
+                                .apply();
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i(LOGIN_ACTIVITY, "onStart called");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i(LOGIN_ACTIVITY, "onPause called");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i(LOGIN_ACTIVITY, "onStop called");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i(LOGIN_ACTIVITY, "onDestroy called");
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i(LOGIN_ACTIVITY, "onSaveInstanceState called");
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.i(LOGIN_ACTIVITY, "onRestoreInstanceState called");
+                        showToast("Login successful");
+                        navigateToMainActivity();
+                    }
+                })
+                .addOnFailureListener(e -> showToast("Failed to fetch user data: " + e.getMessage()));
     }
 }

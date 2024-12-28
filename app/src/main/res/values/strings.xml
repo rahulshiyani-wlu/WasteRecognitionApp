@@ -11,7 +11,8 @@
     <string name="loginbutton">Login</string>
 
     <string name="waste_management_system">Waste Management System</string>
-    <string name="login_subtitle">Sign in to continue</string>
+    <string name="login_subtitle"> Sign in and take action to create a sustainable future.</string>
+    <string name="email_username">Email or Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="remember_me">Remember me</string>
@@ -24,7 +25,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_results_title">This item should go in the…</string>
     <string name="image_button_description">Take a picture</string>
-    <string name="sign_up_to_continue_msg">Please sign up to continue using the app.</string>
+    <string name="sign_up_to_continue_msg">Join today and break barriers for a greener tomorrow.</string>
     <string name="user_name_sign_up">Username</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="app_appearance">Appearance</string>
@@ -56,9 +57,30 @@
 
     <string name="new_password_user">New Password</string>
     <string name="old_password_user">Old Password</string>
-    <string name="update_profile_user">Update Profile</string>
+    <string name="update_profile_user">Back to Settings</string>
     <string name="profile_Username">Username</string>
 
     <string name="group_version">Version 1.0</string>
 
+
+    <string name="item_image">Item Image</string>
+    <string name="item_type_list">Type of Waste</string>
+
+    <!-- Add this line for the edit icon -->
+    <string name="edit_icon">Edit</string>
+
+    <!-- Add this line for the delete icon description -->
+    <string name="delete_icon">Delete</string>
+    <string name="change_password_heading">Password Update</string>
+    <string name="change_pass_link">Change Password</string>
+    <string name="back_to_login_page_from_pass_recovery">Back to Login</string>
+    <string name="email_for_pass_link">Send Reset Link</string>
+    <string name="password_recovery_text_enter_email_below">Please enter your email address below, and we’ll send you a link to help reset your password.</string>
+
+<string name="info_icon">information</string>
+    <string name="user_options_menu_Logout">Logout</string>
+    <string name="Date_New_info">"Date: "</string>
+    <string name="Time_New_info">"Time: "</string>
+    <string name="green_bin_scanner_txt">Green Bin</string>
+    <string name="Reset_Your_Password_Header">Reset Your Password</string>
 </resources>

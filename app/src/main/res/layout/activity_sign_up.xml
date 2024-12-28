@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity">
+    tools:context=".SignUpActivity"
+    android:background="?attr/android:windowBackground">
 
-    <!-- Background Image with proper scaling -->
+    <!-- Background Image for Decorative Purposes -->
     <ImageView
         android:id="@+id/backgroundImage"
         android:layout_width="0dp"
@@ -20,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Semi-transparent overlay for better content readability -->
+    <!-- Semi-transparent Overlay to Improve Text Readability -->
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -30,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Scrollable Content -->
+    <!-- Scrollable Content Area -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -41,6 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Content Layout Inside ScrollView -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,6 +64,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <!-- Subtitle for Providing Additional Context -->
             <TextView
                 android:id="@+id/user_sign_up_app_sub_title"
                 android:layout_width="0dp"
@@ -75,7 +78,7 @@
                 app:layout_constraintStart_toStartOf="@id/user_sign_up_app_title"
                 app:layout_constraintEnd_toEndOf="@id/user_sign_up_app_title"/>
 
-            <!-- Sign Up Form Card -->
+            <!-- Card View to Contain Sign Up Form Fields -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/signUpCard"
                 android:layout_width="0dp"
@@ -84,7 +87,6 @@
                 android:layout_marginTop="@dimen/margin_top_medium"
                 app:cardCornerRadius="@dimen/card_corner_radius"
                 app:cardElevation="@dimen/card_elevation"
-                app:cardBackgroundColor="#F2FFFFFF"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/ui_primary_green"
                 app:layout_constraintTop_toBottomOf="@id/user_sign_up_app_sub_title"
@@ -92,16 +94,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintWidth_max="@dimen/max_content_width">
 
+                <!-- LinearLayout to Hold Input Fields in Vertical Orientation -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="@dimen/padding_medium">
 
-                    <!-- Username Field -->
+                    <!-- Username Input Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:startIconDrawable="@android:drawable/ic_menu_myplaces"
                         android:hint="@string/user_name_sign_up"
                         app:startIconTint="@color/ui_primary_green"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -113,11 +117,12 @@
                             android:maxLines="1"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Email Field -->
+                    <!-- Email Input Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_medium"
+                        app:startIconDrawable="@android:drawable/ic_dialog_email"
                         android:hint="@string/email"
                         app:startIconTint="@color/ui_primary_green"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -130,11 +135,12 @@
                             android:maxLines="1"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Password Field -->
+                    <!-- Password Input Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_medium"
+                        app:startIconDrawable="@android:drawable/ic_lock_lock"
                         android:hint="@string/password"
                         app:startIconTint="@color/ui_primary_green"
                         app:endIconMode="password_toggle"
@@ -149,11 +155,12 @@
                             android:maxLines="1"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Confirm Password Field -->
+                    <!-- Confirm Password Input Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_medium"
+                        app:startIconDrawable="@android:drawable/ic_lock_lock"
                         android:hint="@string/confirm_password"
                         app:startIconTint="@color/ui_primary_green"
                         app:endIconMode="password_toggle"
@@ -170,7 +177,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Sign Up Button -->
+            <!-- Sign Up Button for User Action -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sign_up_btn"
                 android:layout_width="0dp"
@@ -185,7 +192,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintWidth_max="@dimen/max_content_width"/>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

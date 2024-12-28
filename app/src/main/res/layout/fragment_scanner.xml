@@ -1,43 +1,122 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ScannerFragment">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/view_finder"
+    <!-- Background Animation -->
+    <ImageView
+        android:id="@+id/scanner_background_animation"
+        android:layout_width="350dp"
+        android:layout_height="500dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:visibility="visible" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_above="@id/buttons">
 
-    <ImageButton
-        android:id="@+id/imgCapture"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_margin="24dp"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@string/image_button_description" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/loadingPlaceholder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="128dp"
-        android:layout_marginBottom="128dp"
-        android:src="@drawable/loading_placeholder"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <!-- Image Display -->
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="370sp"
+                android:layout_height="370sp"
+                android:layout_marginTop="10sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Classification Result for Blue Bin -->
+            <TextView
+                android:id="@+id/blue_bin_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Blue Bin"
+                android:textColor="#90EE90"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
+
+            <!-- Blue Bin GIF -->
+            <ImageView
+                android:id="@+id/blue_bin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
+
+            <!-- Classification Result for Grey Bin -->
+            <TextView
+                android:id="@+id/grey_bin_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Grey Bin"
+                android:textColor="#90EE90"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
+
+            <!-- Grey Bin GIF -->
+            <ImageView
+                android:id="@+id/grey_bin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
+
+            <!-- Classification Result for Green Bin -->
+            <TextView
+                android:id="@+id/green_bin_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/green_bin_scanner_txt"
+                android:textColor="#90EE90"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
+
+            <!-- Green Bin GIF -->
+            <ImageView
+                android:id="@+id/green_bin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Camera Button Layout -->
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="7dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:lottie_rawRes="@raw/scanner_icon"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            android:layout_gravity="center" />
+    </LinearLayout>
+</RelativeLayout>

@@ -10,16 +10,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+import com.google.firebase.auth.FirebaseAuth;
 
-    public static boolean isSettingsChanged = false;
+public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.settings, rootKey);
-
         configureDarkModeToggle();
         configureSignOutPreference();
         configureProfileSettingsOption();
@@ -31,12 +31,26 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private void configureDarkModeToggle() {
         SwitchPreferenceCompat darkModePreference = findPreference("night_mode");
         if (darkModePreference != null) {
+            // Get the saved theme preference
+            boolean isDarkMode = PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .getBoolean("night_mode", false);
+            darkModePreference.setChecked(isDarkMode);
+
             darkModePreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean isEnabled = (boolean) newValue;
+
+                // Save the user's theme preference
+                PreferenceManager.getDefaultSharedPreferences(getContext())
+                        .edit()
+                        .putBoolean("night_mode", isEnabled)
+                        .apply();
+
+                // Set the appropriate theme using AppCompatDelegate
                 AppCompatDelegate.setDefaultNightMode(
                         isEnabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
                 );
-                isSettingsChanged = true; // Notify MainActivity
+
+                // Keep user in the same fragment without unnecessary reload
                 return true;
             });
         }
@@ -93,14 +107,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void performSignOut() {
-        if (getActivity() != null) {
-            getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE).edit().clear().apply();
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            getActivity().finish();
-            Toast.makeText(getActivity(), "Signed out successfully", Toast.LENGTH_SHORT).show();
-        }
+        FirebaseAuth.getInstance().signOut();
+        getActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE).edit().clear().apply();
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        getActivity().finish();
+        Toast.makeText(getActivity(), "Signed out successfully", Toast.LENGTH_SHORT).show();
     }
 
     private void navigateToActivity(Class<?> activityClass) {
