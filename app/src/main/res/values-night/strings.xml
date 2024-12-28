@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">Waste Recognition App</string>
+
+    <string name="hello_message">Hello World!</string>
+    <string name="button_message">I\'m a button</string>
+    <string name="myfirstapplication">Log in or create a new account</string>
+
+    <string name="email_hint">Enter Your Email</string>
+
+    <string name="password_hint">Password</string>
+    <string name="loginbutton">Login</string>
+
+    <string name="waste_management_system">Waste Management System</string>
+    <string name="login_subtitle"> Sign in and take action to create a sustainable future.</string>
+    <string name="email_username">Email or Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="app_logo">App Logo</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_results_title">This item should go in the…</string>
+    <string name="image_button_description">Take a picture</string>
+    <string name="sign_up_to_continue_msg">Join today and break barriers for a greener tomorrow.</string>
+    <string name="user_name_sign_up">Username</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="app_appearance">Appearance</string>
+    <string name="theme_mode_app">Dark Theme</string>
+    <string name="settings_help">Help</string>
+    <string name="contributors_of_app">Find out more about the creators and contributors of this app</string>
+    <string name="app_contributors">Contributors</string>
+    <string name="write_google_review">Write a review for the app on the Google Play Store</string>
+    <string name="user_review">Write a review</string>
+    <string name="report_issue_by_serverside">Report technical issues or suggest new features</string>
+    <string name="feedback_msg">Send feedback</string>
+    <string name="app_privacy">Privacy Policy</string>
+    <string name="settings_index">Index</string>
+    <string name="item_name_list">Item Name</string>
+    <string name="item_info_list">Item Info</string>
+
+    <string name="account_settings">Account Settings</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_summary">Log out of your account</string>
+    <string name="profile_settings">Profile Settings</string>
+    <string name="manage_profile">Manage your profile information</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_password_summary">Securely change your password</string>
+    <string name="profile_setting_heading">Profile Settings</string>
+
+    <string name="Index_first">Index</string>
+    <string name="Scanner_second">Scanner</string>
+    <string name="Settings_third">Settings</string>
+
+    <string name="new_password_user">New Password</string>
+    <string name="old_password_user">Old Password</string>
+    <string name="update_profile_user">Back to Settings</string>
+    <string name="profile_Username">Username</string>
+
+    <string name="group_version">Version 1.0</string>
+
+
+    <string name="item_image">Item Image</string>
+    <string name="item_type_list">Type of Waste</string>
+
+    <!-- Add this line for the edit icon -->
+    <string name="edit_icon">Edit</string>
+
+    <!-- Add this line for the delete icon description -->
+    <string name="delete_icon">Delete</string>
+    <string name="change_password_heading">Password Update</string>
+    <string name="change_pass_link">Change Password</string>
+    <string name="back_to_login_page_from_pass_recovery">Back to Login</string>
+    <string name="email_for_pass_link">Send Reset Link</string>
+    <string name="password_recovery_text_enter_email_below">Please enter your email address below, and we’ll send you a link to help reset your password.</string>
+
+    <string name="info_icon">information</string>
+    <string name="user_options_menu_Logout">Logout</string>
+    <string name="Date_New_info">"Date: "</string>
+    <string name="Time_New_info">"Time: "</string>
+    <string name="green_bin_scanner_txt">Green Bin</string>
+    <string name="Reset_Your_Password_Header">Reset Your Password</string>
+</resources>

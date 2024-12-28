@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light blue used for primary accents -->
+    <color name="primary_light_blue">#5C7053</color>
+
+    <!-- Dark blue used for primary accents in darker themes -->
+    <color name="primary_dark_blue">#5C7053</color>
+
+    <!-- Black for high contrast, previously named as white -->
+    <color name="pure_white">#000000</color>
+
+    <!-- Dark green for primary UI elements -->
+    <color name="ui_primary_green">#1B5E20</color>
+
+    <!-- Light gray for secondary text -->
+    <color name="ui_secondary_text_gray">#B0BEC5</color>
+
+    <!-- Dark cyan for background surfaces -->
+    <color name="surface_light_cyan">#004D40</color>
+
+    <!-- White for selected items -->
+    <color name="selected_item_color">#FFFFFF</color>
+
+    <!-- Light gray for unselected items -->
+    <color name="unselected_item_color">#B0BEC5</color>
+</resources>
